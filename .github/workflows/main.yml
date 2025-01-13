@@ -10,24 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code from the repository
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Step 2: Set up .NET SDK
       - name: Set up .NET SDK
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'  # Use .NET 8 SDK
 
+      # Step 3: Restore dependencies
       - name: Restore dependencies
         run: |
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
           dotnet restore
 
+      # Step 4: Build the application
       - name: Build the application
         run: |
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
           dotnet build --configuration Release
 
+      # Step 5: Publish the application
       - name: Publish the application
         run: |
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
@@ -39,16 +44,18 @@ jobs:
             exit 1
           fi
 
+      # Step 6: List the contents of the publish directory to verify output
       - name: List the contents of the publish directory
         run: |
           ls -R ./FirstAPI/publish
 
+      # Step 7: Deploy to GitHub Pages using the generated files
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # The branch you want to deploy to
           folder: FirstAPI/publish  # The folder containing the published files
-          token: ${{ secrets.GH_TOKEN1 }}  # Use the correct GitHub token secret
+          token: ${{ secrets.GH_TOKEN }}  # Use the GitHub token secret (make sure you set this up in GitHub secrets)
           git-config-name: 'GitHub Actions'
           git-config-email: 'nilesh.nk171991@gmail.com'
-          force: true  # Force push to resolve conflicts
+          force: true  # Force push to resolve conflicts, if necessary
