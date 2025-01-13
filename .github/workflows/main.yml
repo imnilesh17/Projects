@@ -3,7 +3,7 @@ name: Build and Deploy .NET 8 Console App
 on:
   push:
     branches:
-      - master  # Trigger deployment when pushing to the main branch
+      - master  # Trigger deployment when pushing to the master branch
 
 jobs:
   build:
@@ -20,20 +20,17 @@ jobs:
 
       - name: Restore dependencies
         run: |
-          # Change directory to the project folder and restore dependencies
-          cd FirstAPI  # Adjust this if your .csproj is in a different directory
+          cd FirstAPI
           dotnet restore
 
       - name: Build the application
         run: |
-          # Change directory to the project folder and build the application
-          cd FirstAPI  # Adjust this if your .csproj is in a different directory
+          cd FirstAPI
           dotnet build --configuration Release
 
       - name: Publish the application
         run: |
-          # Change directory to the project folder and publish the application
-          cd FirstAPI  # Adjust this if your .csproj is in a different directory
+          cd FirstAPI
           dotnet publish --configuration Release --output ./publish
 
           # Check if the publish directory exists
@@ -44,7 +41,6 @@ jobs:
 
       - name: List the contents of the publish directory
         run: |
-          # Verify the contents of the publish directory to ensure files are present
           ls -R ./FirstAPI/publish
 
       - name: Set up SSH key for deployment
@@ -54,16 +50,17 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      - name: Deploy to GitHub Pages via SSH
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages  # The branch you want to deploy to
-          folder: FirstAPI/publish  # Ensure this points to the correct folder after the build
-          token: ${{ secrets.SSH_PRIVATE_KEY_TEST }}  # SSH private key for authentication
-          ssh: true  # Enable SSH deployment
-
-      # Adding explicit SSH setup and configuring the remote URL to SSH
       - name: Set Git remote URL to SSH
         run: |
           git remote set-url origin git@github.com:imnilesh17/Projects.git
           git fetch origin
+
+      - name: Deploy to GitHub Pages via SSH
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # The branch you want to deploy to
+          folder: FirstAPI/publish  # Folder containing the generated static files
+          token: ${{ secrets.SSH_PRIVATE_KEY_TEST }}  # SSH private key for authentication
+          git-config-name: 'GitHub Actions'
+          git-config-email: 'nilesh.nk171991@gmail.com'
+          force: true  # Force push in case of any conflicts
