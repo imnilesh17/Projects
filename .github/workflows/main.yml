@@ -22,7 +22,7 @@ jobs:
         run : |
           # Change directory to the project folder and restore dependencies
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
-          dotnet restoredotnet restore
+          dotnet restore
 
       - name: Build the application
         run: |
