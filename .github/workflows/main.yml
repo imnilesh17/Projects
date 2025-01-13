@@ -47,9 +47,18 @@ jobs:
           # Verify the contents of the publish directory to ensure files are present
           ls -R ./FirstAPI/publish
 
-      - name: Deploy to GitHub Pages
+      - name: Set up SSH key for deployment
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY_TEST }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Deploy to GitHub Pages via SSH
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # The branch you want to deploy to
           folder: FirstAPI/publish  # Ensure this points to the correct folder after the build
-          token: ${{ secrets.SSH_PRIVATE_KEY_TEST }}
+          token: ${{ secrets.SSH_PRIVATE_KEY_TEST }}  # Use the SSH key for authentication
+          ssh: true  # Enable SSH deployment
+
