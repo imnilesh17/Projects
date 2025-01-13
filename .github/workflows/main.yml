@@ -17,28 +17,39 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'  # Use .NET 8 SDK
-        
+
       - name: Restore dependencies
-        run : |
+        run: |
           # Change directory to the project folder and restore dependencies
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
           dotnet restore
 
       - name: Build the application
         run: |
-          # Change directory to the project folder and restore dependencies
+          # Change directory to the project folder and build the application
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
           dotnet build --configuration Release
 
       - name: Publish the application
         run: |
-          # Change directory to the project folder and restore dependencies
+          # Change directory to the project folder and publish the application
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
           dotnet publish --configuration Release --output ./publish
-          
+
+          # Check if the publish directory exists
+          if [ ! -d "./publish" ]; then
+            echo "Error: Publish directory does not exist!"
+            exit 1
+          fi
+
+      - name: List the contents of the publish directory
+        run: |
+          # Verify the contents of the publish directory to ensure files are present
+          ls -R ./FirstAPI/publish
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # The branch you want to deploy to
-          folder: ./publish  # Folder containing your generated static files (adjust based on your project)
+          folder: FirstAPI/publish  # Ensure this points to the correct folder after the build
           token: ${{ secrets.SSH_PRIVATE_KEY_TEST }}
