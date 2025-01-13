@@ -41,4 +41,4 @@ jobs:
         with:
           branch: gh-pages  # The branch you want to deploy to
           folder: ./publish/wwwroot  # Folder containing your generated static files (adjust based on your project)
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SSH_PRIVATE_KEY_TEST }}
