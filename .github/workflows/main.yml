@@ -37,7 +37,7 @@ jobs:
           dotnet publish --configuration Release --output ./publish
           
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.1.1
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # The branch you want to deploy to
           folder: ./publish/wwwroot  # Folder containing your generated static files (adjust based on your project)
