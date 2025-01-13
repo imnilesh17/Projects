@@ -50,14 +50,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
+      - name: Test SSH connection
+        run: |
+          ssh -T git@github.com
+
       - name: Set Git remote URL to SSH
         run: |
           git remote set-url origin git@github.com:imnilesh17/Projects.git
           git fetch origin
-
-      - name: Test SSH connection
-        run: |
-          ssh -T git@github.com
 
       - name: Deploy to GitHub Pages via SSH
         uses: JamesIves/github-pages-deploy-action@v4
