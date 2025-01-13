@@ -58,7 +58,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: master  # The branch you want to deploy to
+          branch: gh-pages  # The branch you want to deploy to
           folder: FirstAPI/publish  # The folder containing the published files
           token: ${{ secrets.GH_TOKEN }}  # Use the GitHub token secret (make sure this is configured in GitHub secrets)
           git-config-name: 'GitHub Actions'
