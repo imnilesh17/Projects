@@ -20,19 +20,16 @@ jobs:
 
       - name: Restore dependencies
         run: |
-          # Change directory to the project folder and restore dependencies
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
           dotnet restore
 
       - name: Build the application
         run: |
-          # Change directory to the project folder and build the application
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
           dotnet build --configuration Release
 
       - name: Publish the application
         run: |
-          # Change directory to the project folder and publish the application
           cd FirstAPI  # Adjust this if your .csproj is in a different directory
           dotnet publish --configuration Release --output ./publish
 
@@ -44,16 +41,14 @@ jobs:
 
       - name: List the contents of the publish directory
         run: |
-          # Verify the contents of the publish directory to ensure files are present
           ls -R ./FirstAPI/publish
 
-      - name: Deploy to GitHub Pages using GH_TOKEN
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # The branch you want to deploy to
-          folder: FirstAPI/publish  # Ensure this points to the correct folder after the build
-          token: ${{ secrets.GH_TOKEN }}  # Use the GH_TOKEN secret for authentication
+          folder: FirstAPI/publish  # The folder containing the published files
+          token: ${{ secrets.GH_TOKEN1 }}  # Use the correct GitHub token secret
           git-config-name: 'GitHub Actions'
           git-config-email: 'nilesh.nk171991@gmail.com'
-          force: true  # Force push in case of any conflicts
-          repository-name: imnilesh17/Projects  # Specify the correct repository name
+          force: true  # Force push to resolve conflicts
