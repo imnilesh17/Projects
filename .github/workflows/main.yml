@@ -1,0 +1,63 @@
+name: Build and Deploy .NET 8 Console App
+
+on:
+  push:
+    branches:
+      - master  # Trigger deployment when pushing to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'  # Use .NET 8 SDK
+        
+      - name: Restore dependencies
+        run : |
+          # Change directory to the project folder and restore dependencies
+          cd FirstAPI  # Adjust this if your .csproj is in a different directory
+          dotnet restoredotnet restore
+
+      - name: Build the application
+        run: |
+          # Change directory to the project folder and restore dependencies
+          cd FirstAPI  # Adjust this if your .csproj is in a different directory
+          dotnet build --configuration Release
+
+      - name: Publish the application
+        run: |
+          # Change directory to the project folder and restore dependencies
+          cd FirstAPI  # Adjust this if your .csproj is in a different directory
+          dotnet publish --configuration Release --output ./publish
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # Ensure deployment happens only if the build is successful
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH for deployment
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_TEST }}  # Use SSH key from GitHub secrets
+
+      - name: Copy files to remote server
+        run: |
+          # Copy published files to the remote server (adjust paths as needed)
+          scp -r ./publish/* user@your-server:/path/to/deploy-directory
+
+      - name: SSH into server and run the application
+        run: |
+          ssh user@your-server << 'EOF'
+            # Navigate to the deployment directory and run the console app
+            cd /path/to/deploy-directory
+            nohup dotnet YourConsoleApp.dll &  # Run the console app in the background
+          EOF
