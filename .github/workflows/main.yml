@@ -49,13 +49,21 @@ jobs:
         run: |
           ls -R ./FirstAPI/publish
 
-      # Step 7: Deploy to GitHub Pages using the generated files
+      # Step 7: Ensure the temporary deployment folder exists (for troubleshooting)
+      - name: Ensure deployment folder exists
+        run: |
+          mkdir -p /home/runner/work/Projects/Projects/github-pages-deploy-action-temp-deployment-folder
+
+      # Step 8: Deploy to GitHub Pages using the generated files
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: main  # The branch you want to deploy to
+          branch: master  # The branch you want to deploy to
           folder: FirstAPI/publish  # The folder containing the published files
-          token: ${{ secrets.GH_TOKEN }}  # Use the GitHub token secret (make sure you set this up in GitHub secrets)
+          token: ${{ secrets.GH_TOKEN }}  # Use the GitHub token secret (make sure this is configured in GitHub secrets)
           git-config-name: 'GitHub Actions'
           git-config-email: 'nilesh.nk171991@gmail.com'
           force: true  # Force push to resolve conflicts, if necessary
+          commit-message: 'Deploying .NET 8 Console App 🚀'
+          # Replace with your direct GitHub URL and token
+          remote-url: "https://YOUR_GITHUB_USERNAME:${{ secrets.GH_TOKEN }}@github.com/imnilesh17/Projects.git"  # Use direct token for authentication
