@@ -47,16 +47,7 @@ jobs:
           # Verify the contents of the publish directory to ensure files are present
           ls -R ./FirstAPI/publish
 
-      - name: Set up SSH for GitHub authentication using ssh-agent
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_TEST }}
-
-      - name: Test SSH connection (Optional)
-        run: |
-          ssh -T git@github.com
-
-      - name: Deploy to GitHub Pages using PAT
+      - name: Deploy to GitHub Pages using GH_TOKEN
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # The branch you want to deploy to
