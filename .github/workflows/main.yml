@@ -55,6 +55,10 @@ jobs:
           git remote set-url origin git@github.com:imnilesh17/Projects.git
           git fetch origin
 
+      - name: Test SSH connection
+        run: |
+          ssh -T git@github.com
+
       - name: Deploy to GitHub Pages via SSH
         uses: JamesIves/github-pages-deploy-action@v4
         with:
