@@ -59,7 +59,11 @@ jobs:
         with:
           branch: gh-pages  # The branch you want to deploy to
           folder: FirstAPI/publish  # Ensure this points to the correct folder after the build
-          token: ${{ secrets.SSH_PRIVATE_KEY_TEST }}  # Use the SSH key for authentication
+          token: ${{ secrets.SSH_PRIVATE_KEY_TEST }}  # SSH private key for authentication
           ssh: true  # Enable SSH deployment
 
-#
+      # Adding explicit SSH setup and configuring the remote URL to SSH
+      - name: Set Git remote URL to SSH
+        run: |
+          git remote set-url origin git@github.com:imnilesh17/Projects.git
+          git fetch origin
